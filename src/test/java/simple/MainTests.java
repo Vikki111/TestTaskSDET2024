@@ -1,5 +1,6 @@
 package simple;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import simple.page.PracticeForm;
 import simple.page.TableForm;
+import simple.utils.TestUtils;
 
 public class MainTests {
 
@@ -22,28 +24,36 @@ public class MainTests {
     public void setup() {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
         driver = new ChromeDriver();
-        driver.get("https://demoqa.com/automation-practice-form");
-
+        driver.get(TestUtils.getProperty("demoqa.com"));
     }
 
     @Test
-    public void seleniumTest() {
+    public void submitPracticeFormTest() {
+
+        int length = 10;
+        String postfix = "@mail.ru";
+        String firstName = RandomStringUtils.random(length, true, false);
+        String lastName = RandomStringUtils.random(length, true, false);
+        String email = RandomStringUtils.random(length, true, false) + postfix;
+        String mobile = RandomStringUtils.random(length, false, true);
+        String address = RandomStringUtils.random(length, true, false);
+
 
         PracticeForm practiceForm = new PracticeForm(driver);
 
-        practiceForm.setFirstName("Test first name");
-        practiceForm.setLastName("Test last name");
-        practiceForm.setEmail("test@mail.ru");
+        practiceForm.setFirstName(firstName);
+        practiceForm.setLastName(lastName);
+        practiceForm.setEmail(email);
         practiceForm.genderClick();
-        practiceForm.setMobile("1234567890");
+        practiceForm.setMobile(mobile);
         practiceForm.calendarClick();
         practiceForm.particularMonthClick();
         practiceForm.particularYearClick();
         practiceForm.particularDayClick();
         practiceForm.hobbiesSportsClick();
         practiceForm.scroll("350");
-        practiceForm.setPicture(System.getProperty("user.dir")+"\\src\\test\\resources\\0.jpg");
-        practiceForm.setAddress("test address");
+        practiceForm.setPicture(System.getProperty("user.dir") + "\\src\\test\\resources\\0.jpg");
+        practiceForm.setAddress(address);
         practiceForm.stateClick();
         practiceForm.stateItemClick();
         practiceForm.cityClick();
@@ -51,17 +61,15 @@ public class MainTests {
         practiceForm.submitBtnClick();
 
         TableForm tableForm = new TableForm(driver);
-        Assertions.assertEquals("Test first name Test last name", tableForm.getTextFromStudentNameResult());
-        Assertions.assertEquals("test@mail.ru", tableForm.getTextFromStudentEmailResult());
+        Assertions.assertEquals(firstName + " " + lastName, tableForm.getTextFromStudentNameResult());
+        Assertions.assertEquals(email, tableForm.getTextFromStudentEmailResult());
         Assertions.assertEquals("Male", tableForm.getTextFromGenderResult());
-        Assertions.assertEquals("1234567890", tableForm.getTextFromMobileResult());
+        Assertions.assertEquals(mobile, tableForm.getTextFromMobileResult());
         Assertions.assertEquals("11 June,2024", tableForm.getTextFromDateOfBirthResult());
         Assertions.assertEquals("Sports", tableForm.getTextFromHobbiesResult());
         Assertions.assertEquals("0.jpg", tableForm.getTextFromPictureResult());
-        Assertions.assertEquals("test address", tableForm.getTextFromAddressResult());
+        Assertions.assertEquals(address, tableForm.getTextFromAddressResult());
         Assertions.assertEquals("Uttar Pradesh Agra", tableForm.getTextFromStateAndCityResult());
-
-        int i = 1;
     }
 
 }

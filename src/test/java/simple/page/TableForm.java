@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 public class TableForm {
     private WebDriver driver;
 
-    public TableForm (WebDriver driver) {
+    public TableForm(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -23,27 +23,35 @@ public class TableForm {
     public String getTextFromStudentNameResult() {
         return driver.findElement(studentNameResult).getText();
     }
+
     public String getTextFromStudentEmailResult() {
         return driver.findElement(studentEmailResult).getText();
     }
+
     public String getTextFromGenderResult() {
         return driver.findElement(genderResult).getText();
     }
+
     public String getTextFromMobileResult() {
         return driver.findElement(mobileResult).getText();
     }
+
     public String getTextFromDateOfBirthResult() {
         return driver.findElement(dateOfBirthResult).getText();
     }
+
     public String getTextFromHobbiesResult() {
         return driver.findElement(hobbiesResult).getText();
     }
+
     public String getTextFromPictureResult() {
         return driver.findElement(pictureResult).getText();
     }
+
     public String getTextFromAddressResult() {
         return driver.findElement(addressResult).getText();
     }
+
     public String getTextFromStateAndCityResult() {
         return driver.findElement(stateAndCityResult).getText();
     }

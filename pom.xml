@@ -35,6 +35,11 @@
             <artifactId>allure-junit5</artifactId>
             <version>${allure}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.17.0</version>
+        </dependency>
     </dependencies>
 
 

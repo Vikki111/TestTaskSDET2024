@@ -27,62 +27,79 @@ public class PracticeForm {
     private By cityItem = By.xpath("//*[text()='Agra']");
     private By submitBtn = By.xpath("//button[@id=\"submit\"]");
 
-    public PracticeForm (WebDriver driver) {
+    public PracticeForm(WebDriver driver) {
         this.driver = driver;
     }
 
     public void setFirstName(String str) {
         driver.findElement(firstNameField).sendKeys(str);
     }
+
     public void setLastName(String str) {
         driver.findElement(lastNameField).sendKeys(str);
     }
+
     public void setEmail(String str) {
         driver.findElement(emailField).sendKeys(str);
     }
+
     public void genderClick() {
         driver.findElement(genderRadioBtn).click();
     }
+
     public void setMobile(String str) {
         driver.findElement(mobileField).sendKeys(str);
     }
+
     public void calendarClick() {
         driver.findElement(calendar).click();
     }
+
     public void particularDayClick() {
         driver.findElement(particularDay).click();
     }
+
     public void particularMonthClick() {
         driver.findElement(particularMonth).click();
     }
+
     public void particularYearClick() {
         driver.findElement(particularYear).click();
     }
+
     public void hobbiesSportsClick() {
         driver.findElement(hobbiesCheckBoxSports).click();
     }
+
     public void scroll(String scrollParam) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript(String.format("window.scrollBy(0,%s)", scrollParam), "");
     }
+
     public void setPicture(String str) {
         driver.findElement(pictureFile).sendKeys(str);
     }
+
     public void setAddress(String str) {
         driver.findElement(addressField).sendKeys(str);
     }
+
     public void stateClick() {
         driver.findElement(state).click();
     }
+
     public void stateItemClick() {
         driver.findElement(stateItem).click();
     }
+
     public void cityClick() {
         driver.findElement(city).click();
     }
+
     public void cityItemClick() {
         driver.findElement(cityItem).click();
     }
+
     public void submitBtnClick() {
         driver.findElement(submitBtn).click();
     }
