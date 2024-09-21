@@ -1,0 +1,9 @@
+out/
+../.idea/
+.idea/
+.allure/
+.idea_modules/
+target/
+*.iml
+*.ipr
+*.iws
