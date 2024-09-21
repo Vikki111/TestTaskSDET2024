@@ -9,5 +9,8 @@
         <module name="TestTaskSDET2024" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="TestTaskSDET2024" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
