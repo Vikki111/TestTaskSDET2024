@@ -8,7 +8,7 @@ public class TestUtils {
     public static String getProperty(String key) {
         Properties props = new Properties();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        InputStream stream = loader.getResourceAsStream("/base.properties");
+        InputStream stream = loader.getResourceAsStream("base.properties");
         try {
             props.load(stream);
         } catch (IOException e) {
