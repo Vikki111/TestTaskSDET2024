@@ -8,7 +8,6 @@ public class ListCustomersPage {
     private WebDriver driver;
 
     private By firstNameSortLink = By.xpath("//a[@ng-click=\"sortType = 'fName'; sortReverse = !sortReverse\"]");
-    private By rowOfTable = By.xpath("//tr[1][@class=\"ng-scope\"]");
     private By tableRows = By.xpath("//tbody/tr");
 
 

@@ -2,36 +2,49 @@ package simple.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class AddCustomerPage {
-    private WebDriver driver;
 
-    private By firstNameField = By.xpath("//input[@ng-model=\"fName\"]");
-    private By lastNameField = By.xpath("//input[@ng-model=\"lName\"]");
-    private By postCodeField = By.xpath("//input[@ng-model=\"postCd\"]");
-    private By submitBtn = By.xpath("//button[@type=\"submit\"]");
+    @FindBy(xpath = "//input[@ng-model='fName']")
+    private WebElement firstNameField;
+
+    @FindBy(xpath = "//input[@ng-model='lName']")
+    private WebElement lastNameField;
+
+    @FindBy(xpath = "//input[@ng-model='postCd']")
+    private WebElement postCodeField;
+
+    @FindBy(xpath = "//button[@type='submit']")
+    private WebElement submitBtn;
 
     public AddCustomerPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public void setFirstName(String str) {
-        driver.findElement(firstNameField).sendKeys(str);
+        PageFactory.initElements(driver, this);
     }
 
     public By getFirstNameField() {
-        return this.firstNameField;
+        return By.xpath("//input[@ng-model=\"fName\"]");
     }
 
-    public void setLastName(String str) {
-        driver.findElement(lastNameField).sendKeys(str);
+    public AddCustomerPage setFirstName(String str) {
+        firstNameField.sendKeys(str);
+        return this;
     }
 
-    public void setPostCode(String str) {
-        driver.findElement(postCodeField).sendKeys(str);
+    public AddCustomerPage setLastName(String str) {
+        lastNameField.sendKeys(str);
+        return this;
     }
 
-    public void submitClick() {
-        driver.findElement(submitBtn).click();
+    public AddCustomerPage setPostCode(String str) {
+        postCodeField.sendKeys(str);
+        return this;
+    }
+
+    public AddCustomerPage clickSubmit() {
+        submitBtn.click();
+        return this;
     }
 }

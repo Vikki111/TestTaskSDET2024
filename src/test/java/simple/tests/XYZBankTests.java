@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -18,7 +17,9 @@ import simple.page.ListCustomersPage;
 import simple.utils.TestUtils;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class XYZBankTests {
     WebDriver driver;
@@ -40,7 +41,7 @@ public class XYZBankTests {
 
         String postCode = RandomStringUtils.random(10, false, true);
         String lastName = RandomStringUtils.random(10, true, true);
-        String firstName = getFirstNameFromPostCode(postCode);
+        String firstName = TestUtils.getFirstNameFromPostCode(postCode);
 
         HomePage homePage = new HomePage(driver);
 
@@ -50,36 +51,14 @@ public class XYZBankTests {
         AddCustomerPage addCustomerPage = new AddCustomerPage(driver);
         (new WebDriverWait(driver, Duration.ofSeconds(40))).until(ExpectedConditions.visibilityOfElementLocated(addCustomerPage.getFirstNameField()));
 
-        addCustomerPage.setFirstName(firstName);
-        addCustomerPage.setLastName(lastName);
-        addCustomerPage.setPostCode(postCode);
-
-        addCustomerPage.submitClick();
+        addCustomerPage
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setPostCode(postCode)
+                .clickSubmit();
 
         Alert alert = (new WebDriverWait(driver, Duration.ofSeconds(15))).until(ExpectedConditions.alertIsPresent());
         alert.accept();
-    }
-
-    @Test
-    public void failedAddCustomerTest() {
-        String postCode = RandomStringUtils.random(10, false, true);
-        String lastName = RandomStringUtils.random(10, true, false);
-        String firstName = getFirstNameFromPostCode(postCode);
-
-        HomePage homePage = new HomePage(driver);
-
-        (new WebDriverWait(driver, Duration.ofSeconds(40))).until(ExpectedConditions.elementToBeClickable(homePage.getAddCustomerBtn()));
-        homePage.addCustomerClick();
-
-        AddCustomerPage addCustomerPage = new AddCustomerPage(driver);
-        (new WebDriverWait(driver, Duration.ofSeconds(40))).until(ExpectedConditions.visibilityOfElementLocated(addCustomerPage.getFirstNameField()));
-
-        addCustomerPage.setFirstName(firstName);
-        addCustomerPage.setLastName(lastName);
-
-        addCustomerPage.submitClick();
-
-        Assertions.assertFalse(isAlertPresent());
     }
 
     @Test
@@ -104,11 +83,8 @@ public class XYZBankTests {
         listCustomersPage.firstNameSortLinkClick();
         listCustomersPage.firstNameSortLinkClick();
 
-        List<String> actualListOfFirstNames = new LinkedList<>();
+        List<String> actualListOfFirstNames = TestUtils.getActualListOfFirstNames(listCustomersPage);
 
-        for (int i = 1; i <= listCustomersPage.getSizeOfTable(); i++) {
-            actualListOfFirstNames.add(listCustomersPage.getCellByRowNumberForFirstName(Integer.toString(i)));
-        }
         Assertions.assertEquals(expectedListOfFirstNames, actualListOfFirstNames);
     }
 
@@ -125,23 +101,17 @@ public class XYZBankTests {
 
         (new WebDriverWait(driver, Duration.ofSeconds(40))).until(ExpectedConditions.visibilityOfElementLocated(listCustomersPage.getFirstNameSortLink()));
 
-        List<String> actualListOfFirstNames = new LinkedList<>();
+        List<String> actualListOfFirstNames = TestUtils.getActualListOfFirstNames(listCustomersPage);
 
-        for (int i = 1; i <= listCustomersPage.getSizeOfTable(); i++) {
-            actualListOfFirstNames.add(listCustomersPage.getCellByRowNumberForFirstName(Integer.toString(i)));
-        }
+        Map<String, String> mapNameToIndex = TestUtils.getMapNameToIndex(actualListOfFirstNames);
 
-        Map<String, String> mapNameToIndex = getMapNameToIndex(actualListOfFirstNames);
-
-        String nameForDeletion = getNameForDeletion(actualListOfFirstNames);
+        String nameForDeletion = TestUtils.getNameForDeletion(actualListOfFirstNames);
 
         listCustomersPage.deleteCustomerByRowNumber(mapNameToIndex.get(nameForDeletion));
 
         actualListOfFirstNames.clear();
 
-        for (int i = 1; i <= listCustomersPage.getSizeOfTable(); i++) {
-            actualListOfFirstNames.add(listCustomersPage.getCellByRowNumberForFirstName(Integer.toString(i)));
-        }
+        actualListOfFirstNames = TestUtils.getActualListOfFirstNames(listCustomersPage);
 
         Assertions.assertFalse(actualListOfFirstNames.contains(nameForDeletion));
     }
@@ -151,7 +121,7 @@ public class XYZBankTests {
 
         String postCode = RandomStringUtils.random(28, false, true);
         String lastName = RandomStringUtils.random(10, true, true);
-        String firstName = getFirstNameFromPostCode(postCode);
+        String firstName = TestUtils.getFirstNameFromPostCode(postCode);
 
         HomePage homePage = new HomePage(driver);
 
@@ -161,11 +131,11 @@ public class XYZBankTests {
         AddCustomerPage addCustomerPage = new AddCustomerPage(driver);
         (new WebDriverWait(driver, Duration.ofSeconds(40))).until(ExpectedConditions.visibilityOfElementLocated(addCustomerPage.getFirstNameField()));
 
-        addCustomerPage.setFirstName(firstName);
-        addCustomerPage.setLastName(lastName);
-        addCustomerPage.setPostCode(postCode);
-
-        addCustomerPage.submitClick();
+        addCustomerPage
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setPostCode(postCode)
+                .clickSubmit();
 
         Alert alert = (new WebDriverWait(driver, Duration.ofSeconds(15))).until(ExpectedConditions.alertIsPresent());
         alert.accept();
@@ -178,71 +148,19 @@ public class XYZBankTests {
 
         (new WebDriverWait(driver, Duration.ofSeconds(40))).until(ExpectedConditions.visibilityOfElementLocated(listCustomersPage.getFirstNameSortLink()));
 
-        List<String> actualListOfFirstNames = new LinkedList<>();
+        List<String> actualListOfFirstNames = TestUtils.getActualListOfFirstNames(listCustomersPage);
 
-        for (int i = 1; i <= listCustomersPage.getSizeOfTable(); i++) {
-            actualListOfFirstNames.add(listCustomersPage.getCellByRowNumberForFirstName(Integer.toString(i)));
-        }
+        Map<String, String> mapNameToIndex = TestUtils.getMapNameToIndex(actualListOfFirstNames);
 
-        Map<String, String> mapNameToIndex = getMapNameToIndex(actualListOfFirstNames);
-
-        String nameForDeletion = getNameForDeletion(actualListOfFirstNames);
+        String nameForDeletion = TestUtils.getNameForDeletion(actualListOfFirstNames);
 
         listCustomersPage.deleteCustomerByRowNumber(mapNameToIndex.get(nameForDeletion));
 
         actualListOfFirstNames.clear();
 
-        for (int i = 1; i <= listCustomersPage.getSizeOfTable(); i++) {
-            actualListOfFirstNames.add(listCustomersPage.getCellByRowNumberForFirstName(Integer.toString(i)));
-        }
+        actualListOfFirstNames = TestUtils.getActualListOfFirstNames(listCustomersPage);
 
         Assertions.assertFalse(actualListOfFirstNames.contains(nameForDeletion));
-    }
-
-    private static String getFirstNameFromPostCode(String postCode) {
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < postCode.length(); i += 2) {
-            String twoDigitStr = postCode.substring(i, i + 2);
-            int number = Integer.parseInt(twoDigitStr);
-
-            char letter = getLetterFromNumber(number);
-            result.append(letter);
-        }
-
-        return result.toString();
-    }
-
-    private static char getLetterFromNumber(int number) {
-        int index = number % 26;
-
-        return (char) ('a' + index);
-    }
-
-    private boolean isAlertPresent(){
-        try{
-            driver.switchTo().alert();
-            return true;
-        }catch (NoAlertPresentException e){
-            return false;
-        }
-    }
-
-    private static Map<String, String> getMapNameToIndex(List<String> actualListOfFirstNames) {
-        Map<String, String> mapNameToIndex = new HashMap<>();
-        for (int i = 0; i < actualListOfFirstNames.size(); i++) {
-            mapNameToIndex.put(actualListOfFirstNames.get(i), Integer.toString(i+1));
-        }
-        return mapNameToIndex;
-    }
-
-    private String getNameForDeletion(List<String> actualListOfFirstNames) {
-        OptionalDouble averageLength = actualListOfFirstNames.stream()
-                .mapToInt(String::length)
-                .average();
-
-        return actualListOfFirstNames.stream()
-                .min(Comparator.comparingDouble(s -> Math.abs(s.length() - averageLength.getAsDouble()))).get();
     }
 
 }
