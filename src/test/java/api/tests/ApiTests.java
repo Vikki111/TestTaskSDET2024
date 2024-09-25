@@ -34,4 +34,31 @@ public class ApiTests {
                 .then()
                 .statusCode(204);
     }
+
+    @Test
+    public void getEntityTest() {
+        given()
+                .when()
+                .get("http://localhost:8080/api/get/1")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    public void getAllEntitiesTest() {
+        given()
+                .when()
+                .get("http://localhost:8080/api/getAll")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    public void updateEntityTest() {
+        given()
+                .when()
+                .get("http://localhost:8080/api/patch/1")
+                .then()
+                .statusCode(204);
+    }
 }
