@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class EntityRequest {
     private String title;
     private boolean verified;
-    private AdditionResponse addition;
+    private AdditionRequest addition;
     private int[] important_numbers;
 }
