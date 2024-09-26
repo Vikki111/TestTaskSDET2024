@@ -6,10 +6,6 @@ import api.pojo.EntityResponse;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import org.checkerframework.checker.units.qual.A;
-
-import static api.utils.Creator.createEntityRequest;
-import static io.restassured.RestAssured.given;
 
 public class Utils {
 

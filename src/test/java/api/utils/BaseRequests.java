@@ -24,7 +24,6 @@ public class BaseRequests {
         String id = given()
                 .spec(Utils.getRequestSpecification())
                 .body(entityRequest)
-//                .body(new File("src/test/resources/body.json"))
                 .when()
                 .post("/api/create")
                 .then()
@@ -38,8 +37,9 @@ public class BaseRequests {
 
     public static EntityResponse getEntityById(String id) {
         EntityResponse entityResponse = given()
+                .spec(Utils.getRequestSpecification())
                 .when()
-                .get("http://localhost:8080/api/get/" + id)
+                .get("/api/get/" + id)
                 .then()
                 .statusCode(200)
                 .extract()
