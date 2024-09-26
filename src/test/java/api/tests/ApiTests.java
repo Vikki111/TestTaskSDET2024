@@ -1,5 +1,11 @@
 package api.tests;
 
+import api.pojo.EntityRequest;
+import api.pojo.EntityResponse;
+import api.utils.BaseRequests;
+import api.utils.Creator;
+import api.utils.Utils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,53 +18,96 @@ public class ApiTests {
 //    Получение сущности: GET /api/get/{id}
 //    Получение всех сущностей: GET /api/getAll
 //    Обновление сущности: PATCH /api/patch/{id}
+
+    public static String id;
+
     @Test
     public void createEntityTest() {
-        String id = given()
-                .body(createEntityRequest())
+        EntityRequest entityRequest = createEntityRequest();
+
+        String idOfCreatedEntity = given()
+                .spec(Utils.getRequestSpecification())
+                .body(entityRequest)
                 .when()
-                .post("http://localhost:8080/api/create")
+                .post("/api/create")
                 .then()
-                .statusCode(201)
+                .statusCode(200)
                 .extract()
                 .asString();
-        Assertions.assertEquals(id, "1");
+
+        id = idOfCreatedEntity;
     }
 
     @Test
     public void deleteEntityTest() {
+        EntityResponse expectedEntityResponse = BaseRequests.createEntity();
+        id = "";
+
         given()
-                .body(createEntityRequest())
+                .spec(Utils.getRequestSpecification())
                 .when()
-                .post("http://localhost:8080/api/delete/2")
+                .delete("/api/delete/" + expectedEntityResponse.getId())
                 .then()
                 .statusCode(204);
     }
 
     @Test
     public void getEntityTest() {
-        given()
+        EntityResponse expectedEntityResponse = BaseRequests.createEntity();
+        id = String.valueOf(expectedEntityResponse.getId());
+
+        EntityResponse actualEntityResponse = given()
+                .spec(Utils.getRequestSpecification())
                 .when()
-                .get("http://localhost:8080/api/get/1")
+                .get("/api/get/" + expectedEntityResponse.getId())
                 .then()
-                .statusCode(200);
+                .statusCode(200)
+                .extract()
+                .as(EntityResponse.class);
+
+        Assertions.assertEquals(expectedEntityResponse, actualEntityResponse);
     }
 
     @Test
     public void getAllEntitiesTest() {
+        EntityResponse expectedEntityResponse = BaseRequests.createEntity();
+        id = String.valueOf(expectedEntityResponse.getId());
+
         given()
+                .spec(Utils.getRequestSpecification())
                 .when()
-                .get("http://localhost:8080/api/getAll")
+                .get("/api/getAll")
                 .then()
                 .statusCode(200);
     }
 
     @Test
     public void updateEntityTest() {
+        EntityResponse createdEntity = BaseRequests.createEntity();
+        id = String.valueOf(createdEntity.getId());
+
+        EntityRequest entityForPatch = Creator.createEntityRequest();
+
         given()
+                .spec(Utils.getRequestSpecification())
+                .body(entityForPatch)
                 .when()
-                .get("http://localhost:8080/api/patch/1")
+                .patch("/api/patch/" + createdEntity.getId())
                 .then()
                 .statusCode(204);
+
+        EntityResponse actualEntityResponse = BaseRequests.getEntityById(String.valueOf(createdEntity.getId()));
+
+        EntityResponse expectedUpdatedEntity = Utils.convertRequestToResponse(entityForPatch, String.valueOf(createdEntity.getId()));
+
+        Assertions.assertEquals(expectedUpdatedEntity, actualEntityResponse);
     }
+
+    @AfterEach
+    public void deleteEntitiesById() {
+        if (!id.equals("")) {
+            BaseRequests.deleteEntityById(id);
+        }
+    }
+
 }
