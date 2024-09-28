@@ -9,6 +9,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static api.utils.Creator.createEntityRequest;
 import static io.restassured.RestAssured.given;
 
@@ -36,17 +40,21 @@ public class ApiTests {
                 .asString();
 
         id = idOfCreatedEntity;
+
+        EntityResponse actualEntityResponse = BaseRequests.getEntityById(idOfCreatedEntity);
+
+        Assertions.assertEquals(Utils.convertRequestToResponse(entityRequest, idOfCreatedEntity), actualEntityResponse);
     }
 
     @Test
     public void deleteEntityTest() {
-        EntityResponse expectedEntityResponse = BaseRequests.createEntity();
+        EntityResponse createdEntity = BaseRequests.createEntity();
         id = "";
 
         given()
                 .spec(Utils.getRequestSpecification())
                 .when()
-                .delete("/api/delete/" + expectedEntityResponse.getId())
+                .delete("/api/delete/" + createdEntity.getId())
                 .then()
                 .statusCode(204);
     }
@@ -73,12 +81,18 @@ public class ApiTests {
         EntityResponse expectedEntityResponse = BaseRequests.createEntity();
         id = String.valueOf(expectedEntityResponse.getId());
 
-        given()
+        List<EntityResponse> actualEntityResponses = Arrays.asList(given()
                 .spec(Utils.getRequestSpecification())
                 .when()
                 .get("/api/getAll")
                 .then()
-                .statusCode(200);
+                .statusCode(200)
+                .extract()
+                .as(EntityResponse[].class));
+
+        List<EntityResponse> expectedEntityResponses = new ArrayList<>();
+        expectedEntityResponses.add(expectedEntityResponse);
+        Assertions.assertIterableEquals(expectedEntityResponses, actualEntityResponses);
     }
 
     @Test
