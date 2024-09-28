@@ -1,0 +1,43 @@
+1 кейс 'Add new customer'
+
+1.1) открыть https://www.globalsqa.com/angularJs-protractor/BankingProject/#/manager
+1.2) нажать на AddCustomer
+1.3) заполнить поля First Name, Last Name, Post Code
+1.4) нажать на Add Customer
+1.5) Проверить наличие алерта с текстом "Customer added successfully with customer id : {id}"
+1.6) Нажать ок на алерте
+1.7) Нажать на Customers
+1.8) Проверить наличие в таблице кастомера с параметрами введенными на шаге 1.3
+
+
+2 кейс 'Sort customers by first name'
+
+2.1) открыть https://www.globalsqa.com/angularJs-protractor/BankingProject/#/manager
+2.2) нажать на AddCustomer
+2.3) заполнить поля First Name, Last Name, Post Code, так чтобы поле First Name = 'Aa'.
+2.4) нажать на Add Customer
+2.5) Проверить наличие алерта с текстом "Customer added successfully with customer id : {id}"
+2.6) Нажать ок на алерте
+2.7) Повторить шаги 2.3 - 2.6, на шаге 2.3 сделать так, чтобы First Name = 'Zz'.
+2.7) Нажать на Customers
+2.8) Проверить наличие в таблице кастомеров с параметрами введенными на шаге 2.3 и 2.7
+2.9) Нажать на First Name, чтобы отфильтровать таблицу
+2.10) Проверить, что customer c First Name = "Zz" находится на первой строчке таблицы
+2.11) Проверить, что customer c First Name = "Аа" находится на последней строчке таблицы
+2.12) Нажать на First Name, чтобы отфильтровать таблицу
+2.13) Проверить, что customer c First Name = "Zz" находится на последней строчке таблицы
+2.14) Проверить, что customer c First Name = "Аа" находится на первой строчке таблицы
+
+
+3 кейс 'Delete customer'
+
+3.1) открыть https://www.globalsqa.com/angularJs-protractor/BankingProject/#/manager
+3.2) нажать на AddCustomer
+3.3) заполнить поля First Name, Last Name, Post Code
+3.4) нажать на Add Customer
+3.5) Проверить наличие алерта с текстом "Customer added successfully with customer id : {id}"
+3.6) Нажать ок на алерте
+3.7) Нажать на Customers
+3.8) Проверить наличие в таблице кастомера с параметрами введенными на шаге 3.3
+3.9) Нажать "Delete" в строчке с кастомером, который был создан ранее
+3.10) Проверить, что кастомер удален из таблицы
